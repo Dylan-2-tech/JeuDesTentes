@@ -231,7 +231,7 @@ void retirer_tente(char **grilleJeu, int x, int y){
 	if (*(*(grilleJeu+y)+x) == 'T')
 		*(*(grilleJeu+y)+x) = ' ';
 	else
-		printf("Aucune tente en (%d, %d).",x, y);}
+		printf("ERROR: Aucune tente à cette emplacement...\n");}
 
 // Fonction qui renvoie vrai(1) si la grille de jeu est résolu et faux(0) sinon (Mode de jeu FACILE)
 int est_resolu(char **grilleJeu, char *tenteLigne, char *tenteColonne){

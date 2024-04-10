@@ -81,22 +81,27 @@ int main(void){
 		// Affichage de la grille de jeu
 		affichageGrilleJeu(Jeu.grille, Jeu.tenteLigne, Jeu.tenteColonne);
 		
-		// Demande ce l'action
+		// Demande de l'action
 		do{
-			printf("Placer(+) ou retirer(_) la tente. ex:(+ x y): ");
+			printf("Placer(+) ou retirer(_) la tente: ");
 			scanf("%c", &action);
 			scanf("%d", &x);
 			scanf("%d", &y);
 			scanf("%c", &temp);
 			printf("Action joué: %c %d %d\n", action, x, y);
 
-		}while (action != '+' && action != '_' && action != 't');
+			if (x < 0 || x > 5)
+				printf("X est trop grand: X => (0,5)\n");
+			if (y < 0 || y > 5)
+				printf("Y est trop grand: Y => (0,5)\n");
+
+		}while (action != '+' && action != '_' && action != 't' || (x < 0 || x > 5) || (y < 0 || y > 5));
 		
 		// Si le joueur souhaite pense qu'il a résolu la grille
-		if (action == 't'){
+		if (difficulte && action == 't'){
 			fini = est_resolu(Jeu.grille, Jeu.tenteLigne, Jeu.tenteColonne);
 			if (!fini)
-				printf("ERROR: La grille de jeu n'est pas complète");
+				printf("\nERROR: La grille de jeu n'est pas complète");
 		}
 		else if (action == '+')
 			placer_tente(difficulte, Jeu.grille, x, y, Jeu.tenteLigne, Jeu.tenteColonne);
