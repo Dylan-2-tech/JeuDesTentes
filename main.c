@@ -25,12 +25,15 @@ int main(void){
 	printf(" - Une tente doit être placée sur un emplacement libre.\n");
 	printf(" - Chaque tente doit être attaché à un arbre, \n  et donc placé sur une case adjacente (horizontalement ou verticalement).\n");
 	printf(" - Deux tentes ne euvent se toucher, même en diagonale.\n");
-	printf(" - Le nombre de tentes de chque ligne et chaque colonne est indiqué à gauche et en haut.\n");
+	printf(" - Le nombre de tentes de chaque ligne et chaque colonne est indiqué à gauche et en haut.\n");
 
 	printf("\nComment Jouer:\n");
-	printf(" - Pour Placer une tente il faut dire '+' puis d'ajouter ses coordonnés.\n   ex: + 4 5: la première valeur est le x et la deuxième est le y.\n");
-	printf(" - Pour retirer une tente il faut dire '_' puis d'ajouter ses coordonnés.\n   ex: _ 4 5: la première valeur est le x et la deuxième est le y.\n");
-
+	printf(" - Pour Placer une tente, entrez '+' puis ajouter ses coordonnés.\n   ex: + 4 5: la première valeur est le x et la deuxième est le y.\n");
+	printf(" - Pour retirer une tente, entrez '_' puis ajouter ses coordonnés.\n   ex: _ 4 5: la première valeur est le x et la deuxième est le y.\n");
+	printf(" - Pour retirer toutes les tentes, entrez 'c 0 0'.\n");
+	printf(" - Pour résoudre la grille, entrez 'r 0 0'.\n");
+	
+	// Allocation de l'espace pour enregistrer le nom de la grille
 	char *grille = malloc(15 * sizeof(char));
 
 	// Pointeur d'un fichier
@@ -95,7 +98,7 @@ int main(void){
 			if (y < 0 || y > 5)
 				printf("Y est trop grand: Y => (0,5)\n");
 
-		}while (action != '+' && action != '_' && action != 't' || (x < 0 || x > 5) || (y < 0 || y > 5));
+		}while (action != '+' && action != '_' && action != 't' && action != 'c' && action != 'r' || (x < 0 || x > 5) || (y < 0 || y > 5));
 		
 		// Si le joueur souhaite pense qu'il a résolu la grille
 		if (difficulte && action == 't'){
@@ -107,6 +110,12 @@ int main(void){
 			placer_tente(difficulte, Jeu.grille, x, y, Jeu.tenteLigne, Jeu.tenteColonne);
 		else if (action == '_')
 			retirer_tente(Jeu.grille, x, y);
+		else if (action == 'c')
+			clear_grille(Jeu.grille);
+		else if (action == 'r'){
+			if (!resoudre_grille(Jeu.grille, Jeu.tenteLigne, Jeu.tenteColonne))
+				printf("ERROR: Grille Impossible à résoudre pour l'instant...");
+		}
 		// Si la difficulte est facile
 		if (!difficulte)
 			fini = est_resolu(Jeu.grille, Jeu.tenteLigne, Jeu.tenteColonne);

@@ -41,9 +41,14 @@ int place_correct(char **grilleJeu, int x, int y, char *tenteLigne, char *tenteC
 // Fonction qui place la tente dans la grille de jeu
 void placer_tente(int difficulte, char **grilleJeu, int x, int y, char *tenteLigne, char *tenteColonne);
 
-
 // Fonction qui retire de la grille de jeu la tente sélectionné
 void retirer_tente(char **grilleJeu, int x, int y);
+
+// Fonction qui retire toutes les tentes de la grille
+void clear_grille(char **grilleJeu);
+
+// Fonction qui résous le plus possible une grille
+int resoudre_grille(char **grille, char * tenteLigne, char * tenteColonne);
 
 // Fonction qui renvoie vrai(1) si la grille de jeu est résolu et faux(0) sinon (Mode de jeu FACILE)
 int est_resolu(char **grilleJeu, char *tenteLigne, char *tenteColonne);

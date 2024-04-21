@@ -198,7 +198,7 @@ int check_ligne_colonne(char **grilleJeu, int x, int y, char *tenteLigne, char *
 // Fonction qui renvoie 1 si la tente est bien placer
 int tente_correct(char **grilleJeu, int x, int y){
 	return (
-		arbre_autour(grilleJeu, x,y) &&
+		arbre_autour(grilleJeu, x, y) &&
 		!tente_autour(grilleJeu,x, y)
 		);}
 
@@ -232,6 +232,65 @@ void retirer_tente(char **grilleJeu, int x, int y){
 		*(*(grilleJeu+y)+x) = ' ';
 	else
 		printf("ERROR: Aucune tente à cette emplacement...\n");}
+
+
+// Fonction qui retire toutes les tentes de la grille
+void clear_grille(char **grilleJeu){
+
+	for (int i = 0; i < LEN_GRILLE; i++){
+		for (int j = 0; j < LEN_GRILLE; j++){
+			if (*(*(grilleJeu+j)+i) == 'T')
+				*(*(grilleJeu+j)+i) = ' ';
+		}
+	}
+}
+
+// Fonction qui résous le plus possible une grille
+int resoudre_grille(char **grilleJeu, char * tenteLigne, char * tenteColonne){
+
+	/*
+	Objectif: Parcourir toute la grille (une ou plrs fois) afin de trouver les emplacement sûr et d'y placer les tentes
+	
+	Comment: Parcours de la grille en double boucle for avec i et j les coordonnées des emplacement
+			 Sur chaque ligne, on compte le nombre d'emplacement valides:
+			 	- Si le nombre d'emplacement valide correspond au nombre de tentes à placer => On place les tentes au emplacements trouvé
+			 	- Si le nombre est supérieur, on passe à la ligne suivante
+			 	=> Suppose qu'au moins une ligne sera toujours rempli à chaque tour de boucle cad une action est joué
+
+	Le tour de boucle se fait tant que la grille n'est pas résolu ou alors qu'aucune action est faite
+	*/
+
+	// Variables
+	int CompteurPlaceCorrect;
+	int action = 1;
+
+	while (!est_resolu(grilleJeu, tenteLigne, tenteColonne) && action){
+			
+		action = 0;
+
+		for (int y = 0; y < LEN_GRILLE; y++){
+			
+			int CompteurPlaceCorrect = 0;
+
+			for (int x = 0; x < LEN_GRILLE; x++){
+				if (place_correct(grilleJeu, x, y, tenteLigne, tenteColonne))
+					CompteurPlaceCorrect++;
+			}
+
+			if (CompteurPlaceCorrect == str_to_int(*(tenteColonne+y))){
+
+				action = 1;
+				
+				for (int x = 0; x < LEN_GRILLE; x++){
+					if (place_correct(grilleJeu, x, y, tenteLigne, tenteColonne))
+						placer_tente(1, grilleJeu, x, y, tenteLigne, tenteColonne);
+				}
+			}
+		}
+	}
+	return action;
+}
+
 
 // Fonction qui renvoie vrai(1) si la grille de jeu est résolu et faux(0) sinon (Mode de jeu FACILE)
 int est_resolu(char **grilleJeu, char *tenteLigne, char *tenteColonne){
